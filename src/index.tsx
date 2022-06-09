@@ -1,11 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './App'
+import { AppRoter } from './router/AppRoter'
 import './styles/index.css'
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <AppRoter />
   </React.StrictMode>,
   document.getElementById('root')
 )
