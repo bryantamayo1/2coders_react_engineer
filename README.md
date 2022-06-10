@@ -5,6 +5,7 @@
 1. Configuration project, set up packages and versions.
 2. Settings router and api.
 3. Manage global errors.
+4. Build header and footer.
 
 ## Installation
 ```shell
