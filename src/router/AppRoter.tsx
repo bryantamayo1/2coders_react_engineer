@@ -3,6 +3,12 @@ import { MovieListPage } from "../pages/MovieListPage"
 import { MoviePage } from "../pages/MoviePage"
 
 export const AppRoter = () => {
+
+  // Handle error
+  window.addEventListener("unhandledrejection", ({reason}: any) => {
+    console.log("Ups An error has ocurred. Please try again later")
+  });
+
   return (
     <Router>
         <Routes>
