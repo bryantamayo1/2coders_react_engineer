@@ -4,6 +4,7 @@
 ## Steps to create this application
 1. Configuration project, set up packages and versions.
 2. Settings router and api.
+3. Manage global errors.
 
 ## Installation
 ```shell
