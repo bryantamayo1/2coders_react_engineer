@@ -6,6 +6,7 @@
 2. Settings router and api.
 3. Manage global errors.
 4. Build header and footer.
+5. Define types of API.
 
 ## Installation
 ```shell
