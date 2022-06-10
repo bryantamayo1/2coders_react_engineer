@@ -6,7 +6,7 @@ import { Footer } from "../components/Footer";
 import { Outlet } from "react-router-dom";
 
 
-export const MovieListPage = () => {
+export const AppPage = () => {
   
   useEffect(() => {
     getPopularMovies();
@@ -23,9 +23,7 @@ export const MovieListPage = () => {
   return (
     <ContainerApp>
       <Header/>
-
       <Outlet/>
-
       <Footer/>
     </ContainerApp>
   )

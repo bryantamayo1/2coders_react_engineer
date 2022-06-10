@@ -2,6 +2,7 @@ import React from 'react'
 
 export const MoviePage = () => {
   return (
-    <div>MoviePage</div>
+    <div className="container-body">MoviePage</div>
+
   )
 }

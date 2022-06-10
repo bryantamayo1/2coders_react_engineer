@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Navigate, Route, Routes} from "react-router-dom"
-import { ListMovies } from "../components/ListMovies";
-import { MovieListPage } from "../pages/MovieListPage"
+import { ListMovies } from "../pages/ListMovies";
+import { AppPage } from "../pages/AppPage"
 import { MoviePage } from "../pages/MoviePage"
 
 export const AppRoter = () => {
@@ -13,7 +13,7 @@ export const AppRoter = () => {
   return (
     <Router>
         <Routes>
-            <Route path='' element={<MovieListPage/>}>
+            <Route path='' element={<AppPage/>}>
               <Route path='/' element={<ListMovies/>}/> 
               <Route path='/movie' element={<MoviePage/>}/> 
               <Route path='*' element={<Navigate to=''/>}/>   

@@ -1,6 +1,6 @@
 import {describe, test}     from 'vitest';
 import {render}             from '@testing-library/react';
-import { MovieListPage } from '../pages/MovieListPage';
+import { MovieListPage } from '../pages/AppPage';
 
 describe("MovieListPage test", () => {
     test("MovieListPage exists?", () => {

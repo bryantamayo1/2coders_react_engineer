@@ -3,3 +3,14 @@
 body{
   font-family: 'Montserrat', sans-serif;
 }
+
+/* Header */
+.logo-link{
+  background-color: #000;
+  color: #FFF;
+  text-decoration: none;
+}
+
+.container-body{
+  min-height: calc(100vh - 60px - 60px)
+}
