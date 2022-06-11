@@ -15,7 +15,7 @@ export const AppRoter = () => {
         <Routes>
             <Route path='' element={<AppPage/>}>
               <Route path='/' element={<ListMovies/>}/> 
-              <Route path='/movie' element={<MoviePage/>}/> 
+              <Route path='/movie/:id' element={<MoviePage/>}/> 
               <Route path='*' element={<Navigate to=''/>}/>   
             </Route> 
         </Routes>

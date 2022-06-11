@@ -5,7 +5,7 @@ import styled from 'styled-components';
 export const Header = () => {
   return (
     <ContainerHeader>
-        <Link to="/" className='logo-link'>
+        <Link to="/?page=1" className='logo-link'>
             <i className="fa-solid fa-clapperboard" style={{ marginRight: 10 }}></i>
             MyMovies
         </Link>

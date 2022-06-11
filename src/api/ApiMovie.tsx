@@ -4,8 +4,12 @@ import { PopularMovies } from "../interfaces/MoviesInterface";
 const apiKey = import.meta.env.VITE_API_KEY_TMDB || "";
 const queryAPIKey = "?api_key=" + apiKey;
 
-async function API<T>(path: string):Promise<T>{
-    const resp = await fetch(URL_API + path + queryAPIKey);
+async function API<T>(path: string, page?: number):Promise<T>{
+    let queryPage = "";
+    if(page && page !== 0){
+        queryPage = "&page=" + page;
+    } 
+    const resp = await fetch(URL_API + path + queryAPIKey + queryPage);
     if(resp.ok){
         return await resp.json();
     }else{
@@ -14,8 +18,8 @@ async function API<T>(path: string):Promise<T>{
 }
 
 export class ApiMovie{
-    static async getPopularMovies(){
-        return await API<PopularMovies>("/movie/popular");
+    static async getPopularMovies(page: number){
+        return await API<PopularMovies>("/movie/popular", page);
     }
     static async getMovieById(id: number){
         return await API("/movie/" + id );

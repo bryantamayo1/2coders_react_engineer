@@ -86,3 +86,7 @@ export interface SpokenLanguage {
     name:         string;
 }
 
+export interface PaginationInfo{
+    active: boolean;
+    page: number;
+}
