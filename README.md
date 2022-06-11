@@ -16,6 +16,10 @@
     npm start
     # Run tests
     npm run test
+    # Build project
+    npm run build
+    # Run server of built project
+    npm run preview
 ```
 
 ## License 

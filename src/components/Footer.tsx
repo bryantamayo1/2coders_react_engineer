@@ -17,6 +17,9 @@ const ContainerFooter = styled.div`
     position: relative;
 `;
 const Title = styled.div`
+    @import url('https://fonts.googleapis.com/css2?family=Roboto');
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: 1px;
     position: relative;
     text-align: center;
     top: 50%;

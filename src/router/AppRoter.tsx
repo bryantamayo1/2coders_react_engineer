@@ -5,7 +5,7 @@ import { MoviePage } from "../pages/MoviePage"
 
 export const AppRoter = () => {
 
-  // Handle error
+  // Handle global errors
   window.addEventListener("unhandledrejection", ({reason}: any) => {
     console.log("Ups An error has ocurred. Please try again later")
   });

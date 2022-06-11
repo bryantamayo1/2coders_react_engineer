@@ -1,10 +1,10 @@
 import {describe, test}     from 'vitest';
 import {render}             from '@testing-library/react';
-import { MovieListPage } from '../pages/AppPage';
+import { ListMovies } from '../pages/ListMovies';
 
-describe("MovieListPage test", () => {
-    test("MovieListPage exists?", () => {
-        const component = render(<MovieListPage/>);
-        component.getByText("MovieListPage");
+describe("ListMovies test", () => {
+    test("ListMovies exists?", () => {
+        const component = render(<ListMovies/>);
+        component.getByText("ListMovies");
     })
 })
