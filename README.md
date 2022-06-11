@@ -7,6 +7,7 @@
 3. Manage global errors.
 4. Build header and footer.
 5. Define types of API.
+6. Pagination popular movies.
 
 ## Installation
 ```shell

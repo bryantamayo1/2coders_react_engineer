@@ -28,6 +28,9 @@ export enum OriginalLanguage {
     Fr = "fr",
 }
 
+/**
+ * Details only one movie
+ */
 export interface Movie {
     adult:                 boolean;
     backdrop_path:         string;

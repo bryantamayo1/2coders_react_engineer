@@ -1,5 +1,5 @@
 import { URL_API } from "../utils/Constants";
-import { PopularMovies } from "../interfaces/MoviesInterface";
+import { PopularMovies, Movie } from "../interfaces/MoviesInterface.d";
 
 const apiKey = import.meta.env.VITE_API_KEY_TMDB || "";
 const queryAPIKey = "?api_key=" + apiKey;
@@ -22,6 +22,6 @@ export class ApiMovie{
         return await API<PopularMovies>("/movie/popular", page);
     }
     static async getMovieById(id: number){
-        return await API("/movie/" + id );
+        return await API<Movie>("/movie/" + id );
     }
 }

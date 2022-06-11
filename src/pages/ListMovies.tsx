@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { ApiMovie } from '../api/ApiMovie';
-import { PaginationInfo, PopularMovies } from '../interfaces/MoviesInterface';
-import { URL_MOVIE_IMG } from '../utils/Constants';
+import { PaginationInfo, PopularMovies } from '../interfaces/MoviesInterface.d';
+import { formatDateSpanish, URL_MOVIE_IMG } from '../utils/Constants';
 import moment from 'moment';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
 
@@ -24,7 +24,6 @@ export const ListMovies = () => {
   // Constants
   const sizeImg = "w300";   // Size with img of backend
   const buttonsPaginationLength =  5;
-  const maxPagesOfPagination = 500;
 
   useEffect(() => {
     const pageQuery = searchParams.get("page") || state.paginationInfo[0].page;
@@ -42,18 +41,18 @@ export const ListMovies = () => {
   }, [location.search]);
 
   /**
+   * Get popular movies and calculate pagination: buttons and page actived page
    * @params {number} page query pagination
    */
   const getPopularMovies = async(page: number) => {
     setSearchParams({page: ""+page});                                       // Set up query page
     const data = await ApiMovie.getPopularMovies(page);
     data.results.forEach(item => {
-      item.release_date = moment(item.release_date).format("DD/MM/YYYY");   // Change format date
+      item.release_date = moment(item.release_date).format(formatDateSpanish);   // Change format date
       item.popularity = +(item.popularity / 1000).toFixed(1);               // Change format popularity
     });
-    // Calculate pagination
 
-    console.log({page})
+    // Calculate pagination
     let paginationInfo:PaginationInfo[] = [];
     let indexStartPagination = 1;
     const rest = page % buttonsPaginationLength;
@@ -68,7 +67,6 @@ export const ListMovies = () => {
         active: i === page
       });
     }
-    // const paginationInfo = state.paginationInfo;
     setState(prev => ({ ...prev, data, paginationInfo }));
   }
 
@@ -139,7 +137,6 @@ export const ListMovies = () => {
           ))}
           <MovePagination onClick={() => movePage(1)}>{">"}</MovePagination>
       </ContainerPagintation>
-
     </div>
   )
 }
@@ -166,6 +163,7 @@ const ButtonSelect = styled.span<{active?: boolean}>`
   &:hover{
     color: #000;
     background-color: #FFF;
+    font-weight: bold;
   }
 `;
 const ContainerListMovies = styled.div`
