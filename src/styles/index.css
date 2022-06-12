@@ -1,4 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat');
+:root{
+  --color-alert-error: rgb(219, 82, 78);
+}
 
 body{
   font-family: 'Montserrat', sans-serif;
@@ -18,4 +21,39 @@ body{
 /* Star icon */
 .star-icon{
   color: yellow;
+}
+/* Spinner */
+.container-spinner{
+  align-items: center;
+  display: flex;
+  height: calc(100vh - 60px - 60px);
+  justify-content: center;
+}
+
+/* Error message */
+.container-error{
+  background-color: var(--color-alert-error);
+  color: #FFF;
+  box-sizing: border-box;
+  display: flex;
+  left: 50%;
+  padding: 10px;
+  position: fixed;
+  transform: translatex(-50%);
+  animation: fadein 1.5s;
+}
+.btn-close{
+  background-color: var(--color-alert-error);
+  color: #FFF;
+  border: var(--color-alert-error);
+  margin-left: 10px;
+  cursor: pointer;
+}
+@keyframes fadein {
+  from {
+    opacity:0;
+  }
+  to {
+      opacity:1;
+  }
 }

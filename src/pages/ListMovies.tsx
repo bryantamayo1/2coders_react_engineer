@@ -5,14 +5,17 @@ import { PaginationInfo, PopularMovies }      from '../interfaces/MoviesInterfac
 import { formatDateSpanish, URL_MOVIE_IMG }   from '../utils/Constants';
 import moment                                 from 'moment';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { Spinner }                            from '../components/Spinner';
 
 type ListMoviesState = {
   data: PopularMovies,
-  paginationInfo: PaginationInfo[]
+  paginationInfo: PaginationInfo[],
+  activeSpinner: boolean
 }
 const ListMoviesInitialState:ListMoviesState = {
   data: {} as PopularMovies,                        // Popular movies of API
-  paginationInfo: [{ active: true, page: 1 }]       // Default page = 1
+  paginationInfo: [{ active: true, page: 1 }],       // Default page = 1
+  activeSpinner: false
 }
 
 export const ListMovies = () => {
@@ -46,28 +49,34 @@ export const ListMovies = () => {
    */
   const getPopularMovies = async(page: number) => {
     setSearchParams({page: ""+page});                                       // Set up query page
-    const data = await ApiMovie.getPopularMovies(page);
-    data.results.forEach(item => {
-      item.release_date = moment(item.release_date).format(formatDateSpanish);   // Change format date
-      item.popularity = +(item.popularity / 1000).toFixed(1);               // Change format popularity
-    });
-
-    // Calculate pagination
-    let paginationInfo:PaginationInfo[] = [];
-    let indexStartPagination = 1;
-    const rest = page % buttonsPaginationLength;
-    if(rest){
-      indexStartPagination = page - rest + 1;
-    }else{
-      indexStartPagination = page - buttonsPaginationLength + 1;
-    }
-    for(let i = indexStartPagination; i < indexStartPagination + buttonsPaginationLength; i++){
-      paginationInfo.push({
-        page: i,
-        active: i === page
+    setState(prev => ({ ...prev, activeSpinner: true }));   // Active spinner
+    try{
+      const data = await ApiMovie.getPopularMovies(page);
+      data.results.forEach(item => {
+        item.release_date = moment(item.release_date).format(formatDateSpanish);   // Change format date
+        item.popularity = +(item.popularity / 1000).toFixed(1);               // Change format popularity
       });
+  
+      // Calculate pagination
+      let paginationInfo:PaginationInfo[] = [];
+      let indexStartPagination = 1;
+      const rest = page % buttonsPaginationLength;
+      if(rest){
+        indexStartPagination = page - rest + 1;
+      }else{
+        indexStartPagination = page - buttonsPaginationLength + 1;
+      }
+      for(let i = indexStartPagination; i < indexStartPagination + buttonsPaginationLength; i++){
+        paginationInfo.push({
+          page: i,
+          active: i === page
+        });
+      }
+      setState(prev => ({ ...prev, data, paginationInfo, activeSpinner: false }));
+    }finally{
+      // In case request fail disabled spinner
+      setState(prev => ({ ...prev, activeSpinner: false }));
     }
-    setState(prev => ({ ...prev, data, paginationInfo }));
   }
 
   /**
@@ -96,6 +105,7 @@ export const ListMovies = () => {
 
   return (
     <div className="container-body">
+      <Spinner active={state.activeSpinner}>
       <ContainerOptionMovies>
         <Link to="?page=1" style={{ textDecoration: "none" }}>
           <ButtonSelect active>Popular</ButtonSelect>
@@ -125,17 +135,20 @@ export const ListMovies = () => {
         ))}
       </ContainerListMovies>
 
-      <ContainerPagintation>
-          {state.paginationInfo[0]?.page !== 1 && <MovePagination onClick={() => movePage(-1)}>{"<"}</MovePagination>}
-          {state.paginationInfo.map( ({active, page}) => (
-            <Link to={`?page=${page}`}>
-              <PaginateButton border active={active} key={page}>
-                {page}
-              </PaginateButton>
-            </Link>
-          ))}
-          <MovePagination onClick={() => movePage(1)}>{">"}</MovePagination>
-      </ContainerPagintation>
+      {state.paginationInfo.length !== 1 && (
+        <ContainerPagintation>
+            {state.paginationInfo[0]?.page !== 1 && <MovePagination onClick={() => movePage(-1)}>{"<"}</MovePagination>}
+            {state.paginationInfo.map( ({active, page}) => (
+              <Link to={`?page=${page}`} key={page}>
+                <PaginateButton border active={active}>
+                  {page}
+                </PaginateButton>
+              </Link>
+            ))}
+            <MovePagination onClick={() => movePage(1)}>{">"}</MovePagination>
+        </ContainerPagintation>
+      )}
+      </Spinner>
     </div>
   )
 }

@@ -3,17 +3,20 @@ import { useEffect, useState }              from 'react'
 import { useNavigate, useParams }           from 'react-router-dom'
 import styled                               from 'styled-components';
 import { ApiMovie }                         from '../api/ApiMovie';
+import { Spinner } from '../components/Spinner';
 import { Movie }                            from '../interfaces/MoviesInterface.d';
 import { formatDateSpanish, URL_MOVIE_IMG } from '../utils/Constants';
 
 type MoviePageState = {
   data: Movie,
-  limitLettersOfOverview: boolean     // if >= 500 change height iamge to get nice responsive
+  limitLettersOfOverview: boolean,     // if >= 500 change height iamge to get nice responsive
+  activeSpinner: boolean
 }
 
 const MoviePageInitialState:MoviePageState = {
   data: {} as Movie,
-  limitLettersOfOverview: false
+  limitLettersOfOverview: false,
+  activeSpinner: false
 }
 
 export const MoviePage = () => {
@@ -35,73 +38,84 @@ export const MoviePage = () => {
   
   const getMovieById = async(id: number) => {
     let limitLettersOfOverview = state.limitLettersOfOverview;
-    const data = await ApiMovie.getMovieById(id);
-    data.release_date = moment(data.release_date).format(formatDateSpanish);  // Change format date  
-    data.tagline = data.tagline.slice( 0, data.tagline.lastIndexOf("."));     // Delete dot
-
-    // Fix size according to count letters of data.overview. E.g. movie id = 371370  "Looking Back at it All: The Dragon Ball Z Year-End Show!"
-    data.backdrop_path = data.backdrop_path? data.backdrop_path : data.poster_path;
-    if(data.overview.length >= 500){
-      limitLettersOfOverview = true;
+    setState(prev => ({ ...prev, activeSpinner: true }));   // Active spinner
+    try{
+      const data = await ApiMovie.getMovieById(id);
+      data.release_date = moment(data.release_date).format(formatDateSpanish);  // Change format date  
+      data.tagline = data.tagline.slice( 0, data.tagline.lastIndexOf("."));     // Delete dot
+  
+      // Fix size according to count letters of data.overview. E.g. movie id = 371370  "Looking Back at it All: The Dragon Ball Z Year-End Show!"
+      data.backdrop_path = data.backdrop_path? data.backdrop_path : data.poster_path;
+      if(data.overview.length >= 500){
+        limitLettersOfOverview = true;
+      }
+      setState(prev => ({ ...prev, data, limitLettersOfOverview, activeSpinner: false }));
+    }finally{
+      // In case request fail disabled spinner
+      setState(prev => ({ ...prev, activeSpinner: false }));
     }
-    setState(prev => ({ ...prev, data, limitLettersOfOverview }));
   }
 
   return (
     <ContainerMovie>
-      {state.data.backdrop_path && (
-        <ContainerMovieBackground 
-          src={`${URL_MOVIE_IMG}${sizeImg}${state.data.backdrop_path}`}
-          limitLettersOfOverview={state.limitLettersOfOverview}
-        />
-      )}
-      <ContainerInfo>
-        <CardInfo>
-          <div style={{ marginBottom: 60 }}>
-            <Title>{state.data.title}</Title>
-            <TagLine>{state.data.tagline}</TagLine>
-          </div>
+      <Spinner active={state.activeSpinner}>
+        {state.data.backdrop_path && (
+          <ContainerMovieBackground 
+            src={`${URL_MOVIE_IMG}${sizeImg}${state.data.backdrop_path}`}
+            limitLettersOfOverview={state.limitLettersOfOverview}
+          />
+        )}
+        {state.data.id && (
+          <ContainerInfo>
+            <CardInfo>
+              <div style={{ marginBottom: 60 }}>
+                <Title>{state.data.title}</Title>
+                <TagLine>{state.data.tagline}</TagLine>
+              </div>
 
-          <FirstInfo>
-            <span>{state.data.release_date}</span>
-            <ContainerItem>
-              <i className="fa-regular fa-clock"></i>
-              <span>{state.data.runtime}'</span>
-            </ContainerItem>
-         
-            <ContainerItem>
-              <i className="fa-solid fa-language"></i>
-              {state.data.spoken_languages?.map( (item, index) => (
-                <>
-                  <span>{item.english_name}</span>
-                  {state.data.spoken_languages.length -1 !== index && <Bar/>}
-                </>
-              ))}
-            </ContainerItem>
-          </FirstInfo>
+              <FirstInfo>
+                <span>{state.data.release_date}</span>
+                <ContainerItem>
+                  <i className="fa-regular fa-clock"></i>
+                  <span>{state.data.runtime}'</span>
+                </ContainerItem>
+            
+                <ContainerItem>
+                  <i className="fa-solid fa-language"></i>
+                  {state.data.spoken_languages?.map( (item, index) => (
+                    <>
+                      <span>{item.english_name}</span>
+                      {state.data.spoken_languages.length -1 !== index && <Bar/>}
+                    </>
+                  ))}
+                </ContainerItem>
+              </FirstInfo>
 
-          <SecondInfo>
-            {state.data.genres?.map(item =>(
-              <GenreMovie>{item.name}</GenreMovie>
-            ))}
-          </SecondInfo>
+              <SecondInfo>
+                {state.data.genres?.map(item =>(
+                  <GenreMovie>{item.name}</GenreMovie>
+                ))}
+              </SecondInfo>
 
-          <ThirdInfo>
-            <span>
-              <i className="fa-solid fa-star star-icon fa-sm" style={{ marginRight: 5 }}></i>
-              {state.data.vote_average}
-            </span>
-            <span>
-              Votes: {state.data.vote_count}
-            </span>
-          </ThirdInfo>
+              <ThirdInfo>
+                <span>
+                  <i className="fa-solid fa-star star-icon fa-sm" style={{ marginRight: 5 }}></i>
+                  {state.data.vote_average}
+                </span>
+                <span>
+                  Votes: {state.data.vote_count}
+                </span>
+              </ThirdInfo>
 
-          <Description>
-              {state.data.overview}
-          </Description>
+              <Description>
+                  {state.data.overview}
+              </Description>
 
-        </CardInfo>
-      </ContainerInfo>
+            </CardInfo>
+          </ContainerInfo>
+        )}
+        
+      </Spinner>
     </ContainerMovie>
 
   )
