@@ -2,11 +2,24 @@ import { BrowserRouter as Router, Navigate, Route, Routes}  from "react-router-d
 import { ListMovies }                                       from "../pages/ListMovies";
 import { AppPage }                                          from "../pages/AppPage";
 import { MoviePage }                                        from "../pages/MoviePage";
-import { useState }                                         from "react";
+import { useEffect, useState }                                         from "react";
 
 export const AppRoter = () => {
   // Hooks
   const [activeError, setActiveError] = useState({active: false, message: ""});
+
+  /**
+   * Timer to hide alert message
+   */
+  const timer = setTimeout(() => {
+    closeAlert();
+  }, 5000);
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(timer);
+    }
+  },);
 
   // Handle global errors
   window.addEventListener("unhandledrejection", ({reason}: any) => {
@@ -14,8 +27,9 @@ export const AppRoter = () => {
     reason.errors? reason.status_message = reason.errors[0] : "";
     reason.status_message? reason.status_message : "Ups! An error occurred, Please try again later.";
     setActiveError({active: true, message: reason.status_message});
+    timer;
   });
-  
+
   const closeAlert = () => setActiveError({active: false, message: ""});
 
   return (

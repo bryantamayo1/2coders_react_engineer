@@ -2,7 +2,7 @@
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/bryantamayo1/2coders_react_engineer)
 ![APM](https://img.shields.io/apm/l/react)
 # 2coders_react_engineer
-> Project created with React, TypeScript and Vite
+> Project created with React, TypeScript and Vite. Popular and details movies
 
 ## Steps to create this application
 1. Configuration project, set up packages and versions.
@@ -14,6 +14,9 @@
 7. Responsive web application
 8. Refactoring code
 9. Create spinner when data is loading
+
+## Extras
+1. Add theme dark and light with context
 
 ## Installation
 ```shell
