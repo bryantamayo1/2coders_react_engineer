@@ -9,9 +9,7 @@ body{
 }
 
 /* Header */
-.logo-link{
-  background-color: #000;
-  color: #FFF;
+.link{
   text-decoration: none;
 }
 

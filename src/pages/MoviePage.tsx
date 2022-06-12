@@ -1,9 +1,10 @@
 import moment                               from 'moment';
-import { useEffect, useState }              from 'react'
+import { useContext, useEffect, useState }  from 'react'
 import { useNavigate, useParams }           from 'react-router-dom'
 import styled                               from 'styled-components';
 import { ApiMovie }                         from '../api/ApiMovie';
-import { Spinner } from '../components/Spinner';
+import { Spinner }                          from '../components/Spinner';
+import { AppContext }                       from '../context/AppContext';
 import { Movie }                            from '../interfaces/MoviesInterface.d';
 import { formatDateSpanish, URL_MOVIE_IMG } from '../utils/Constants';
 
@@ -21,6 +22,7 @@ const MoviePageInitialState:MoviePageState = {
 
 export const MoviePage = () => {
   // Hooks
+  const {theme} = useContext(AppContext);
   const [state, setState] = useState(MoviePageInitialState as MoviePageState);
   const {id} = useParams();
   const navigate = useNavigate();
@@ -63,10 +65,11 @@ export const MoviePage = () => {
           <ContainerMovieBackground 
             src={`${URL_MOVIE_IMG}${sizeImg}${state.data.backdrop_path}`}
             limitLettersOfOverview={state.limitLettersOfOverview}
+            theme={theme}
           />
         )}
         {state.data.id && (
-          <ContainerInfo>
+          <ContainerInfo style={{ color: "#FFF" }}>
             <CardInfo>
               <div style={{ marginBottom: 60 }}>
                 <Title>{state.data.title}</Title>
@@ -125,7 +128,14 @@ const ContainerMovie = styled.div`
   position: relative;
 `;
 const ContainerMovieBackground = styled.div<{src: string, limitLettersOfOverview: boolean}>`
-  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 1) 100%), url(${props => props.src});
+  /* background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 1) 100%), url(${props => props.src}); */
+  background-image: ${prev => {
+    if(prev.theme.theme === "dark"){
+      return `linear-gradient(180deg, rgba(255, 255, 255, 0) 10%, rgba(0, 0, 0, 1) 100%), url(${prev.src})`;
+    }else{
+      return `linear-gradient(180deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.1) 100%), url(${prev.src})`;
+    }
+  }};
   background-position: center;
   background-size: cover;
   height: calc(100vh - 60px - 60px);

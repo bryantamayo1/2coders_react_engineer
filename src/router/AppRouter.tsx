@@ -2,9 +2,9 @@ import { BrowserRouter as Router, Navigate, Route, Routes}  from "react-router-d
 import { ListMovies }                                       from "../pages/ListMovies";
 import { AppPage }                                          from "../pages/AppPage";
 import { MoviePage }                                        from "../pages/MoviePage";
-import { useEffect, useState }                                         from "react";
+import { useEffect, useState }                              from "react";
 
-export const AppRoter = () => {
+export const AppRouter = () => {
   // Hooks
   const [activeError, setActiveError] = useState({active: false, message: ""});
 

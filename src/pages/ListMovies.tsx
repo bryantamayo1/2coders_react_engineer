@@ -1,16 +1,20 @@
-import { useEffect, useState }                from 'react'
+import { useContext, useEffect, useState }    from 'react'
 import styled                                 from 'styled-components';
 import { ApiMovie }                           from '../api/ApiMovie';
-import { PaginationInfo, PopularMovies }      from '../interfaces/MoviesInterface.d';
+import { PaginationInfo, PopularMovies, StyleProps }      from '../interfaces/MoviesInterface.d';
 import { formatDateSpanish, URL_MOVIE_IMG }   from '../utils/Constants';
 import moment                                 from 'moment';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { Spinner }                            from '../components/Spinner';
+import { AppContext } from '../context/AppContext';
 
 type ListMoviesState = {
   data: PopularMovies,
   paginationInfo: PaginationInfo[],
   activeSpinner: boolean
+}
+interface ButtonSelectProps extends StyleProps{
+  active?: boolean
 }
 const ListMoviesInitialState:ListMoviesState = {
   data: {} as PopularMovies,                        // Popular movies of API
@@ -20,6 +24,7 @@ const ListMoviesInitialState:ListMoviesState = {
 
 export const ListMovies = () => {
   // Hooks
+  const {theme} = useContext(AppContext);
   const [state, setState] = useState(ListMoviesInitialState as ListMoviesState);
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
@@ -108,7 +113,7 @@ export const ListMovies = () => {
       <Spinner active={state.activeSpinner}>
       <ContainerOptionMovies>
         <Link to="?page=1" style={{ textDecoration: "none" }}>
-          <ButtonSelect active>Popular</ButtonSelect>
+          <ButtonSelect theme={theme}>Popular</ButtonSelect>
         </Link>
         <ButtonSelect>Top Rated</ButtonSelect>
       </ContainerOptionMovies>
@@ -137,15 +142,15 @@ export const ListMovies = () => {
 
       {state.paginationInfo.length !== 1 && (
         <ContainerPagintation>
-            {state.paginationInfo[0]?.page !== 1 && <MovePagination onClick={() => movePage(-1)}>{"<"}</MovePagination>}
+            {state.paginationInfo[0]?.page !== 1 && <MovePagination onClick={() => movePage(-1)} theme={theme}>{"<"}</MovePagination>}
             {state.paginationInfo.map( ({active, page}) => (
-              <Link to={`?page=${page}`} key={page}>
-                <PaginateButton border active={active}>
+              <Link to={`?page=${page}`} key={page} style={theme}>
+                <PaginateButton active={active} theme={theme}>
                   {page}
                 </PaginateButton>
               </Link>
             ))}
-            <MovePagination onClick={() => movePage(1)}>{">"}</MovePagination>
+            <MovePagination onClick={() => movePage(1)} theme={theme}>{">"}</MovePagination>
         </ContainerPagintation>
       )}
       </Spinner>
@@ -160,10 +165,10 @@ const ContainerOptionMovies = styled.div`
   margin: 5px auto;
   width: 80%;
 `;
-const ButtonSelect = styled.span<{active?: boolean}>`
-  background-color: ${props => props.active? "#FFF" : "#000"};
-  color: ${props => props.active? "#000" : "#FFF"};
-  border: 1px solid #FFF;
+const ButtonSelect = styled.span<ButtonSelectProps>`
+  background-color: ${prev => prev.theme.color};
+  border: 1px solid ${prev => prev.theme.backgroundColor};
+  color: ${prev => prev.theme.backgroundColor};
   border-radius: 15px;
   box-sizing: border-box;
   cursor: pointer;
@@ -173,8 +178,6 @@ const ButtonSelect = styled.span<{active?: boolean}>`
   transition: all 0.3s;
   
   &:hover{
-    color: #000;
-    background-color: #FFF;
     font-weight: bold;
   }
 `;
@@ -228,30 +231,42 @@ const ContainerInfoMovie = styled.div`
   width: 100%;
 `;
 const TitleMovie = styled.p`
-  margin: 5px 0px;
   font-weight: bold;
+  margin: 5px 0px;
 `;
 const ReleaseDateMovie = styled.p`
-  margin: 5px 0px;
   font-size: 10px;
+  margin: 5px 0px;
 `;
 const StarMovie = styled.p`
-  margin: 3px 0px;
   font-size: 13px;
+  margin: 3px 0px;
 `;
 const ContainerPagintation= styled.div`
-  row-gap: 10px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   margin: 10px auto;
+  row-gap: 10px;
   text-align: center; 
   width: 80%;
 `;
-const PaginateButton = styled.div<{border?: boolean, active?: boolean}>`
-  background-color: ${props => props.active? "#FFF" : "#000"};
-  color: ${props => props.active? "#000" : "#FFF"};
-  border: ${props => props.border? "1px solid #FFF" : "none"};
+const PaginateButton = styled.div<{active?: boolean}>`
+  background-color: ${prev => {
+    if(prev.theme.theme === "dark"){
+      return prev.active? prev.theme.color : prev.theme.backgroundColor;
+    }else{
+      return prev.active? prev.theme.backgroundColor : prev.theme.color;
+    }
+  }};
+  color: ${prev => {
+    if(prev.theme.theme === "dark"){
+      return prev.active? prev.theme.backgroundColor : prev.theme.color;
+    }else{
+      return prev.active? prev.theme.color : prev.theme.backgroundColor;
+    }
+  }};
+  border: 1px solid ${prev => prev.theme.color};
   border-radius: 100%;
   display: inline-block;
   height: 35px;
@@ -260,7 +275,9 @@ const PaginateButton = styled.div<{border?: boolean, active?: boolean}>`
   width: 35px;
 `;
 const MovePagination = styled.button`
-  background-color: #000;
-  color: #FFF;
+  background-color: ${prev => prev.theme.backgroundColor};
+  border: 1px solid ${prev => prev.theme.backgroundColor};
+  box-sizing: border-box;
+  color: ${prev => prev.theme.color};
   cursor: pointer;
 `;

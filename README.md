@@ -14,6 +14,7 @@
 7. Responsive web application
 8. Refactoring code
 9. Create spinner when data is loading
+10. Clean code
 
 ## Extras
 1. Add theme dark and light with context

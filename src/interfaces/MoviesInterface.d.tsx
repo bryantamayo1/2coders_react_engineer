@@ -93,3 +93,16 @@ export interface PaginationInfo{
     active: boolean;
     page: number;
 }
+
+export interface ThemeApp{
+    color: string,
+    backgroundColor: string,
+    theme: string
+}
+
+/**
+ * Used in styled-components
+ */
+export interface StyleProps {
+    theme:ThemeApp
+}

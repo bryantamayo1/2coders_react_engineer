@@ -1,12 +1,15 @@
 import React          from 'react';
 import ReactDOM       from 'react-dom';
-import { AppRoter }   from './router/AppRoter';
+import { AppRouter }   from './router/AppRouter';
 import './styles/normalize.css';
 import './styles/index.css';
+import { AppProvider } from './context/AppContext';
 
 ReactDOM.render(
   <React.StrictMode>
-    <AppRoter />
+    <AppProvider>
+      <AppRouter />
+    </AppProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )
