@@ -1,7 +1,7 @@
-import { BrowserRouter as Router, Navigate, Route, Routes} from "react-router-dom"
-import { ListMovies } from "../pages/ListMovies";
-import { AppPage } from "../pages/AppPage"
-import { MoviePage } from "../pages/MoviePage"
+import { BrowserRouter as Router, Navigate, Route, Routes}  from "react-router-dom"
+import { ListMovies }                                       from "../pages/ListMovies";
+import { AppPage }                                          from "../pages/AppPage";
+import { MoviePage }                                        from "../pages/MoviePage";
 
 export const AppRoter = () => {
 

@@ -1,5 +1,5 @@
-import { URL_API } from "../utils/Constants";
-import { PopularMovies, Movie } from "../interfaces/MoviesInterface.d";
+import { URL_API }               from "../utils/Constants";
+import { PopularMovies, Movie }  from "../interfaces/MoviesInterface.d";
 
 const apiKey = import.meta.env.VITE_API_KEY_TMDB || "";
 const queryAPIKey = "?api_key=" + apiKey;

@@ -1,9 +1,9 @@
-import moment from 'moment';
-import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import styled from 'styled-components';
-import { ApiMovie } from '../api/ApiMovie';
-import { Movie } from '../interfaces/MoviesInterface.d';
+import moment                               from 'moment';
+import { useEffect, useState }              from 'react'
+import { useNavigate, useParams }           from 'react-router-dom'
+import styled                               from 'styled-components';
+import { ApiMovie }                         from '../api/ApiMovie';
+import { Movie }                            from '../interfaces/MoviesInterface.d';
 import { formatDateSpanish, URL_MOVIE_IMG } from '../utils/Constants';
 
 type MoviePageState = {

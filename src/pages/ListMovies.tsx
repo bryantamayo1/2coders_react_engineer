@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react'
-import styled from 'styled-components';
-import { ApiMovie } from '../api/ApiMovie';
-import { PaginationInfo, PopularMovies } from '../interfaces/MoviesInterface.d';
-import { formatDateSpanish, URL_MOVIE_IMG } from '../utils/Constants';
-import moment from 'moment';
+import { useEffect, useState }                from 'react'
+import styled                                 from 'styled-components';
+import { ApiMovie }                           from '../api/ApiMovie';
+import { PaginationInfo, PopularMovies }      from '../interfaces/MoviesInterface.d';
+import { formatDateSpanish, URL_MOVIE_IMG }   from '../utils/Constants';
+import moment                                 from 'moment';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
 
 type ListMoviesState = {

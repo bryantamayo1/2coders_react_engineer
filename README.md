@@ -9,6 +9,7 @@
 5. Define types of API.
 6. Pagination popular movies.
 7. Responsive web application
+8. Refactoring code
 
 ## Installation
 ```shell
