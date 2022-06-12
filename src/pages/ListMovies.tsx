@@ -118,7 +118,6 @@ export const ListMovies = () => {
                 <StarMovie>
                   <i className="fa-solid fa-star star-icon fa-sm" style={{ marginRight: 5 }}></i>
                   {item.popularity}
-                  {/* <i className="fa-solid fa-star-half-stroke star-icon" ></i> */}
                 </StarMovie>
               </ContainerInfoMovie>
             </ContainerMovie>
@@ -167,7 +166,6 @@ const ButtonSelect = styled.span<{active?: boolean}>`
   }
 `;
 const ContainerListMovies = styled.div`
-  /* border: 1px solid red; */
   box-sizing: border-box;
   display: grid;
   grid-row-gap: 15px;
@@ -178,6 +176,13 @@ const ContainerListMovies = styled.div`
   place-content: center;
   place-items: center;
   width: 80%;
+
+  @media(max-width: 768px){
+    width: 90%;
+  }
+  @media(max-width: 480px){
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
 `;
 const ContainerMovie = styled.div`
   border-radius: 5px;
@@ -194,6 +199,11 @@ const CardImg = styled.div<{src: string}>`
 
   &:hover{
     transform: scale(1.1);
+  }
+  @media(max-width: 480px){
+    // Aspect ratio 1.5
+    height: 405px;
+    width: 270px;
   }
 `;
 const ContainerInfoMovie = styled.div`
@@ -217,14 +227,17 @@ const StarMovie = styled.p`
   font-size: 13px;
 `;
 const ContainerPagintation= styled.div`
+  row-gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   margin: 10px auto;
-  text-align: center;
+  text-align: center; 
   width: 80%;
 `;
 const PaginateButton = styled.div<{border?: boolean, active?: boolean}>`
   background-color: ${props => props.active? "#FFF" : "#000"};
   color: ${props => props.active? "#000" : "#FFF"};
-  cursor: pointer;
   border: ${props => props.border? "1px solid #FFF" : "none"};
   border-radius: 100%;
   display: inline-block;

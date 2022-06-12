@@ -7,11 +7,13 @@ import { Movie } from '../interfaces/MoviesInterface.d';
 import { formatDateSpanish, URL_MOVIE_IMG } from '../utils/Constants';
 
 type MoviePageState = {
-  data: Movie
+  data: Movie,
+  limitLettersOfOverview: boolean     // if >= 500 change height iamge to get nice responsive
 }
 
 const MoviePageInitialState:MoviePageState = {
   data: {} as Movie,
+  limitLettersOfOverview: false
 }
 
 export const MoviePage = () => {
@@ -21,7 +23,7 @@ export const MoviePage = () => {
   const navigate = useNavigate();
 
   // Constants
-  const sizeImg = "w1280";   // Size with img of backend
+  const sizeImg = "w1280";   // Size with img of movie
 
   useEffect(() => {
     if(!id){
@@ -32,22 +34,33 @@ export const MoviePage = () => {
   }, []);
   
   const getMovieById = async(id: number) => {
-    //@ts-ignore
+    let limitLettersOfOverview = state.limitLettersOfOverview;
     const data = await ApiMovie.getMovieById(id);
-    data.release_date = moment(data.release_date).format(formatDateSpanish);
-    data.tagline = data.tagline.slice( 0, data.tagline.lastIndexOf("."));   // Delete dot
-    setState(prev => ({ ...prev, data }));
+    data.release_date = moment(data.release_date).format(formatDateSpanish);  // Change format date  
+    data.tagline = data.tagline.slice( 0, data.tagline.lastIndexOf("."));     // Delete dot
+
+    // Fix size according to count letters of data.overview. E.g. movie id = 371370  "Looking Back at it All: The Dragon Ball Z Year-End Show!"
+    data.backdrop_path = data.backdrop_path? data.backdrop_path : data.poster_path;
+    if(data.overview.length >= 500){
+      limitLettersOfOverview = true;
+    }
+    setState(prev => ({ ...prev, data, limitLettersOfOverview }));
   }
 
   return (
     <ContainerMovie>
-      <ContainerMovieBackground src={`${URL_MOVIE_IMG}${sizeImg}${state.data.backdrop_path}`}/>
+      {state.data.backdrop_path && (
+        <ContainerMovieBackground 
+          src={`${URL_MOVIE_IMG}${sizeImg}${state.data.backdrop_path}`}
+          limitLettersOfOverview={state.limitLettersOfOverview}
+        />
+      )}
       <ContainerInfo>
         <CardInfo>
-          <p style={{ marginBottom: 60 }}>
+          <div style={{ marginBottom: 60 }}>
             <Title>{state.data.title}</Title>
             <TagLine>{state.data.tagline}</TagLine>
-          </p>
+          </div>
 
           <FirstInfo>
             <span>{state.data.release_date}</span>
@@ -97,18 +110,21 @@ const ContainerMovie = styled.div`
   min-height: calc(100vh - 60px - 60px);
   position: relative;
 `;
-const ContainerMovieBackground = styled.div<{src: string}>`
+const ContainerMovieBackground = styled.div<{src: string, limitLettersOfOverview: boolean}>`
   background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 1) 100%), url(${props => props.src});
   background-position: center;
   background-size: cover;
   height: calc(100vh - 60px - 60px);
   position: relative;
 
+  @media (max-width: 768px){
+    height: ${ prev => prev.limitLettersOfOverview? "calc(100vh + 300px)" : "calc(100vh - 60px - 60px)"};
+  }
   @media(max-width: 600px){
-    height: 100vh;
+    height: ${ prev => prev.limitLettersOfOverview? "calc(100vh + 500px)" : "100vh"};
   }
   @media(max-width: 480px){
-    height: calc(100vh + 200px);
+    height: ${ prev => prev.limitLettersOfOverview? "calc(100vh + 700px)" : "calc(100vh + 200px)"};
   }
 `;
 const ContainerInfo = styled.div`

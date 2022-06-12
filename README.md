@@ -1,4 +1,4 @@
-# # 2coders_react_engineer
+# 2coders_react_engineer
 > Project created with React, TypeScript and Vite
 
 ## Steps to create this application
@@ -8,6 +8,7 @@
 4. Build header and footer.
 5. Define types of API.
 6. Pagination popular movies.
+7. Responsive web application
 
 ## Installation
 ```shell
