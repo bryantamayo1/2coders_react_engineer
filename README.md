@@ -19,6 +19,15 @@
 ## Extras
 1. Add theme dark and light with context
 
+## Usage
+This is final application with theme dark:
+![](src/img/list-movies-dark.PNG) 
+![](src/img/movie-dark.PNG) 
+<br />
+And theme light:
+![](src/img/list-movies-light.PNG) 
+![](src/img/movie-light.PNG) 
+
 ## Installation
 ```shell
     # Install dependencies
